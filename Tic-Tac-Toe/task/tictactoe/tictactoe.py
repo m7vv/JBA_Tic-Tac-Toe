@@ -1,17 +1,9 @@
 def show(state):
-    for i in range(len(state)):
-        for j in state[i]:
-            if j == 1:
-                print('X', end=' ')
-            else:
-                print('O', end=' ')
-        print()
+    print('-' * 9)
+    for i in range(3):
+        print("| {} {} {} |".format(state[0 + 3 * i], state[1 + 3 * i], state[2 + 3 * i]))
+    print('-' * 9)
 
 
-stateGame = [
-    (1, 0, 1),
-    (0, 0, 1),
-    (1, 0, 1)
-]
-
+stateGame = input('Enter cells:')
 show(stateGame)
