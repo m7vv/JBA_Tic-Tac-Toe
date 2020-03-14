@@ -1,9 +1,77 @@
-def show(state):
+def show(state_l):
     print('-' * 9)
     for i in range(3):
-        print("| {} {} {} |".format(state[0 + 3 * i], state[1 + 3 * i], state[2 + 3 * i]))
+        print("| {} {} {} |".format(state_l[i][0], state_l[i][1], state_l[i][2]))
     print('-' * 9)
 
 
-stateGame = input('Enter cells:')
-show(stateGame)
+def state_str2list(str_input):
+    """
+    convert state of game from string to list of list
+    """
+    state = [[0 for _ in range(3)] for __ in range(3)]
+    str_input = str_input.replace("_", " ")
+
+    state[0][0] = str_input[0]
+    state[0][1] = str_input[1]
+    state[0][2] = str_input[2]
+    state[1][0] = str_input[3]
+    state[1][1] = str_input[4]
+    state[1][2] = str_input[5]
+    state[2][0] = str_input[6]
+    state[2][1] = str_input[7]
+    state[2][2] = str_input[8]
+    return state
+
+
+def check(state):
+    num_x = 0
+    num_y = 0
+    num_empty = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] == 'X':
+                num_x += 1
+            elif state[i][j] == 'O':
+                num_y += 1
+            elif state[i][j] == ' ':
+                num_empty += 1
+    if abs(num_x - num_y) >= 2:
+        return 'Impossible'
+    num_row_x = 0
+    num_row_y = 0
+    num_col_x = 0
+    num_col_y = 0
+    for i in range(3):
+        if state[i][0] == state[i][1] == state[i][2] == 'X':
+            num_row_x += 1
+        elif state[i][0] == state[i][1] == state[i][2] == 'O':
+            num_row_y += 1
+        if state[0][i] == state[1][i] == state[2][i] == 'X':
+            num_col_x += 1
+        elif state[0][i] == state[1][i] == state[2][i] == 'O':
+            num_col_y += 1
+    if num_row_x >= 1 and num_row_y >= 1:
+        return 'Impossible'
+    if num_col_x >= 1 and num_col_y >= 1:
+        return 'Impossible'
+    if num_row_x == 1 or num_col_x == 1:
+        return "X wins"
+    if num_row_y == 1 or num_col_y == 1:
+        return "O wins"
+    if state[0][0] == state[1][1] == state[2][2] == 'X':
+        return 'X wins'
+    if state[0][0] == state[1][1] == state[2][2] == 'O':
+        return 'O wins'
+    if state[0][2] == state[1][1] == state[2][0] == 'X':
+        return 'X wins'
+    if state[0][2] == state[1][1] == state[2][0] == 'O':
+        return 'O wins'
+    if num_empty >= 1:
+        return 'Game not finished'
+    return "Draw"
+
+
+state_game = state_str2list(input('Enter cells:'))
+show(state_game)
+print(check(state_game))
