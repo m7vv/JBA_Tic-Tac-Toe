@@ -72,6 +72,24 @@ def check(state):
     return "Draw"
 
 
+def make_move(state):
+    good_coords = False
+    while not good_coords:
+        pos_x, pos_y = input('Enter the coordinates:').split()
+        if not pos_x.isdecimal() or not pos_y.isdecimal():
+            print('You should enter numbers!')
+            continue
+        pos_x = int(pos_x)
+        pos_y = int(pos_y)
+        if not (1 <= pos_x <= 3) or not (1 <= pos_y <= 3):
+            print('Coordinates should be from 1 to 3!')
+            continue
+        state[3 - pos_x][pos_y] = "v"
+        good_coords = True
+
+
 state_game = state_str2list(input('Enter cells:'))
 show(state_game)
 print(check(state_game))
+make_move(state_game)
+show(state_game)
