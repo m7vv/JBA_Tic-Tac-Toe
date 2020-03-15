@@ -84,12 +84,16 @@ def make_move(state):
         if not (1 <= pos_x <= 3) or not (1 <= pos_y <= 3):
             print('Coordinates should be from 1 to 3!')
             continue
-        state[3 - pos_x][pos_y] = "v"
+
+        if state[3 - pos_y][pos_x - 1] != " ":
+            print('This cell is occupied! Choose another one!')
+            continue
+        state[3 - pos_y][pos_x - 1] = "X"
         good_coords = True
 
 
 state_game = state_str2list(input('Enter cells:'))
 show(state_game)
-print(check(state_game))
+# print(check(state_game))
 make_move(state_game)
 show(state_game)
