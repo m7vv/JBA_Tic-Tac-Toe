@@ -37,7 +37,7 @@ def check(state):
             elif state[i][j] == ' ':
                 num_empty += 1
     if abs(num_x - num_y) >= 2:
-        return 'Impossible'
+        return True, 'Impossible'
     num_row_x = 0
     num_row_y = 0
     num_col_x = 0
@@ -52,27 +52,27 @@ def check(state):
         elif state[0][i] == state[1][i] == state[2][i] == 'O':
             num_col_y += 1
     if num_row_x >= 1 and num_row_y >= 1:
-        return 'Impossible'
+        return True, 'Impossible'
     if num_col_x >= 1 and num_col_y >= 1:
-        return 'Impossible'
+        return True, 'Impossible'
     if num_row_x == 1 or num_col_x == 1:
-        return "X wins"
+        return True, "X wins"
     if num_row_y == 1 or num_col_y == 1:
-        return "O wins"
+        return True, "O wins"
     if state[0][0] == state[1][1] == state[2][2] == 'X':
-        return 'X wins'
+        return True, 'X wins'
     if state[0][0] == state[1][1] == state[2][2] == 'O':
-        return 'O wins'
+        return True, 'O wins'
     if state[0][2] == state[1][1] == state[2][0] == 'X':
-        return 'X wins'
+        return True, 'X wins'
     if state[0][2] == state[1][1] == state[2][0] == 'O':
-        return 'O wins'
+        return True, 'O wins'
     if num_empty >= 1:
-        return 'Game not finished'
-    return "Draw"
+        return False, 'Game not finished'
+    return True, "Draw"
 
 
-def make_move(state):
+def make_move(state, cur_player):
     good_coords = False
     while not good_coords:
         pos_x, pos_y = input('Enter the coordinates:').split()
@@ -88,12 +88,20 @@ def make_move(state):
         if state[3 - pos_y][pos_x - 1] != " ":
             print('This cell is occupied! Choose another one!')
             continue
-        state[3 - pos_y][pos_x - 1] = "X"
+        state[3 - pos_y][pos_x - 1] = cur_player
         good_coords = True
 
 
-state_game = state_str2list(input('Enter cells:'))
+state_game = state_str2list("_" * 9)
 show(state_game)
-# print(check(state_game))
-make_move(state_game)
-show(state_game)
+player = "X"
+result = False
+while not result:
+    make_move(state_game, player)
+    show(state_game)
+    if player == 'X':
+        player = 'O'
+    else:
+        player = 'X'
+    result = check(state_game)[0]
+print(check(state_game)[1])
